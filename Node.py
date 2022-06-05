@@ -6,7 +6,7 @@ g = Grid()
 
 def choose_obstacle_value():
     states = [0, 1]
-    probability = [0.6, 0.4]
+    probability = [0.7, 0.3]
     return random.choices(states, probability)[0]
 
 

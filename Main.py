@@ -9,15 +9,17 @@ from A_star import *
 grid = Grid()
 pygame.init()
 clock = pygame.time.Clock()
+GAME_UPDATE = pygame.USEREVENT
+pygame.time.set_timer(GAME_UPDATE, 100)
 screen = pygame.display.set_mode((grid.cell_size * grid.grid_width, grid.cell_size * grid.grid_height))
 
 
 def create_grid_list():
     grid_list = []
-    for i in range(grid.grid_height):
+    for y in range(grid.grid_height):
         row_list = []
-        for j in range(grid.grid_width):
-            node = Node(j, i, None)
+        for x in range(grid.grid_width):
+            node = Node(x, y, None)
             row_list.append(node)
         grid_list.append(row_list)
     return grid_list
@@ -65,19 +67,22 @@ def draw_shortest_path(path):
 def main():
     grid_list = create_grid_list()
     rectangles = create_rectangles_from_grid_list(grid_list)
+    for lst in grid_list:
+        print(lst)
     while True:
         screen.fill((250, 250, 250))
         pygame.display.set_caption("PathFinder")
         draw_grid(rectangles)
         path = find_shortest_path(grid_list)
-        draw_shortest_path(path)
-        time.sleep(3)
-        pygame.display.update()
         clock.tick(60)
+        pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+            elif event.type == GAME_UPDATE:
+                draw_shortest_path(path)
+                pygame.display.update()
 
 
 main()
